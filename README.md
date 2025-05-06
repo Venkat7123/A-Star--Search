@@ -1,8 +1,8 @@
 <h1>ExpNo 4 : Implement A* search algorithm for a Graph</h1> 
-<h3>Name:       </h3>
-<h3>Register Number:           </h3>
+<h3>Name:  Venkatachalam S</h3>
+<h3>Register Number:  212224220121</h3>
 <H3>Aim:</H3>
-<p>To ImplementA * Search algorithm for a Graph using Python 3.</p>
+<p>To Implement A* Search algorithm for a Graph using Python3.</p>
 <H3>Algorithm:</H3>
 
 ``````
@@ -117,3 +117,95 @@ G 0 <br>
 <h2>Sample Output</h2>
 <hr>
 Path found: ['A', 'E', 'D', 'G']
+<hr>
+<h2>Coding</h2>
+<hr>
+
+```
+from collections import defaultdict
+
+H_dist = {}
+
+def aStarAlgo(start_node, stop_node):
+    open_set = set([start_node])
+    closed_set = set()
+    g = {}
+    parents = {}
+    g[start_node] = 0
+    parents[start_node] = start_node
+
+    while len(open_set) > 0:
+        n = None
+        for v in open_set:
+            if n is None or g[v] + heuristic(v) < g[n] + heuristic(n):
+                n = v
+
+        if n is None:
+            print("Path does not exist!")
+            return None
+
+        if n == stop_node:
+            path = []
+            while parents[n] != n:
+                path.append(n)
+                n = parents[n]
+            path.append(start_node)
+            path.reverse()
+            print('Path found: {}'.format(path))
+            return path
+
+        for (m, weight) in get_neighbors(n):
+            if m not in open_set and m not in closed_set:
+                open_set.add(m)
+                parents[m] = n
+                g[m] = g[n] + weight
+            else:
+                if g[m] > g[n] + weight:
+                    g[m] = g[n] + weight
+                    parents[m] = n
+                    if m in closed_set:
+                        closed_set.remove(m)
+                        open_set.add(m)
+
+        open_set.remove(n)
+        closed_set.add(n)
+
+    print("Path does not exist!")
+    return None
+
+def get_neighbors(v):
+    return Graph_nodes.get(v, [])
+
+def heuristic(n):
+    return H_dist[n]
+
+graph = defaultdict(list)
+n, e = map(int, input("Enter Number of Nodes and Edges: ").split())
+for _ in range(e):
+    u, v, cost = map(str, input("Enter the value of u, v and cost: ").split())
+    cost = float(cost)
+    graph[u].append((v, cost))
+    graph[v].append((u, cost))
+
+for _ in range(n):
+    node, h = map(str, input("Enter node and Heuristic value: ").split())
+    H_dist[node] = float(h)
+
+Graph_nodes = graph
+aStarAlgo('A', 'G')
+
+
+```
+
+
+<hr>
+<h2>Output</h2>
+<hr>
+
+![image](https://github.com/user-attachments/assets/3492a004-4458-4f68-99a8-07c035b2a361)
+
+
+<hr>
+<h2>Result </h2>
+<hr>
+Thus,a Graph was constructed and implementation of A* Search for the same graph was done successfully.
